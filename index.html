@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MapuTru Repostera — Postres con propósito</title>
+<link rel="icon" href="images/icon-terracota.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --terracota:#9d5354;
+    --terracota-deep:#6f3838;
+    --cream:#e7e5db;
+    --cream-light:#f6f5ef;
+    --ink:#362727;
+    --ink-soft:#5c4a49;
+    --gold:#b98a4a;
+    --line:rgba(54,39,39,0.14);
+    --shadow:0 18px 40px rgba(54,39,39,0.10);
+    --radius-organic:38px 10px 38px 10px;
+    --maxw:1160px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+  }
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Work Sans', sans-serif;
+    line-height:1.55;
+  }
+  h1,h2,h3,.display{
+    font-family:'Fraunces', serif;
+    color:var(--terracota-deep);
+    line-height:1.08;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+  a{color:inherit;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px;}
+  :focus-visible{outline:3px solid var(--gold); outline-offset:3px;}
+
+  /* ---------- Header ---------- */
+  header.site{
+    position:sticky; top:0; z-index:50;
+    background:rgba(231,229,219,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-row{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 24px; max-width:var(--maxw); margin:0 auto; gap:20px;
+  }
+  .brand{display:flex; align-items:center; gap:10px; text-decoration:none;}
+  .brand img{height:44px; width:auto;}
+  .brand-name{font-family:'Fraunces', serif; font-size:1.15rem; color:var(--terracota-deep); font-weight:600;}
+  nav.links{display:flex; gap:26px; overflow-x:auto; scrollbar-width:none;}
+  nav.links::-webkit-scrollbar{display:none;}
+  nav.links a{
+    font-size:0.94rem; font-weight:500; text-decoration:none;
+    color:var(--ink-soft); white-space:nowrap; padding:6px 2px;
+    border-bottom:2px solid transparent;
+  }
+  nav.links a:hover{border-bottom-color:var(--terracota);}
+  .btn-wa-pill{
+    display:inline-flex; align-items:center; gap:8px;
+    background:var(--terracota); color:#fff; border:none;
+    padding:11px 18px; border-radius:999px; font-weight:600;
+    font-size:0.92rem; cursor:pointer; text-decoration:none;
+    white-space:nowrap; transition:background 0.2s ease, transform 0.2s ease;
+  }
+  .btn-wa-pill:hover{background:var(--terracota-deep); transform:translateY(-1px);}
+
+  /* ---------- Hero ---------- */
+  .hero{padding:64px 0 40px;}
+  .hero-grid{
+    display:grid; grid-template-columns:1.05fr 0.95fr; gap:56px; align-items:center;
+  }
+  .eyebrow-mark{
+    display:inline-block; font-size:0.85rem; color:var(--terracota); font-weight:600;
+    margin-bottom:14px;
+  }
+  .hero h1{font-size:clamp(2.1rem, 4vw, 3.1rem); font-weight:500;}
+  .hero p.lede{
+    margin-top:20px; font-size:1.08rem; color:var(--ink-soft); max-width:46ch;
+  }
+  .hero-ctas{display:flex; gap:14px; margin-top:30px; flex-wrap:wrap;}
+  .btn-primary{
+    background:var(--terracota); color:#fff; border:none; padding:14px 26px;
+    border-radius:var(--radius-organic); font-weight:600; font-size:0.98rem;
+    text-decoration:none; cursor:pointer; transition:transform 0.2s ease, background 0.2s ease;
+  }
+  .btn-primary:hover{background:var(--terracota-deep); transform:translateY(-2px);}
+  .btn-ghost{
+    border:1.5px solid var(--terracota-deep); color:var(--terracota-deep);
+    padding:13px 24px; border-radius:var(--radius-organic); font-weight:600;
+    font-size:0.98rem; text-decoration:none; background:transparent;
+  }
+  .hero-figure{position:relative;}
+  .hero-figure .blob{
+    position:absolute; inset:-6%; background:var(--terracota);
+    border-radius:62% 38% 55% 45% / 48% 55% 45% 52%;
+    z-index:0; opacity:0.9;
+  }
+  .hero-figure img{
+    position:relative; z-index:1; border-radius:52% 48% 58% 42% / 46% 52% 48% 54%;
+    aspect-ratio:1/1; object-fit:cover; border:8px solid var(--cream-light);
+  }
+
+  /* ---------- Promo band ---------- */
+  .promo-band{
+    background:var(--terracota-deep); color:var(--cream-light); padding:18px 0;
+    overflow:hidden;
+  }
+  .promo-track{
+    display:flex; gap:52px; white-space:nowrap; font-family:'Fraunces', serif;
+    font-size:1.05rem; align-items:center;
+  }
+  .promo-track span.sep{color:var(--gold); font-size:1.2rem;}
+
+  /* ---------- Section shells ---------- */
+  section{padding:76px 0;}
+  .section-head{max-width:56ch; margin-bottom:44px;}
+  .section-head .kicker{color:var(--terracota); font-weight:600; font-size:0.86rem; display:block; margin-bottom:10px;}
+  .section-head h2{font-size:clamp(1.7rem,3vw,2.3rem); font-weight:500;}
+  .section-head p{color:var(--ink-soft); margin-top:14px; font-size:1.02rem;}
+
+  section.alt{background:var(--cream-light); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+
+  /* ---------- Story strip ---------- */
+  .story{display:grid; grid-template-columns:0.85fr 1.15fr; gap:48px; align-items:center;}
+  .story img{border-radius:14px 60px 14px 60px; box-shadow:var(--shadow);}
+  .story h2{font-size:clamp(1.6rem,2.6vw,2.1rem); font-weight:500; margin-bottom:16px;}
+  .story p{color:var(--ink-soft);}
+  .story ul{margin:20px 0 0; padding:0; list-style:none; display:grid; gap:12px;}
+  .story li{display:flex; gap:10px; align-items:flex-start; color:var(--ink-soft); font-size:0.98rem;}
+  .story li::before{content:"◆"; color:var(--gold); font-size:0.7rem; margin-top:6px;}
+
+  /* ---------- Category tabs ---------- */
+  .cat-tabs{display:flex; gap:12px; flex-wrap:wrap; margin-bottom:8px;}
+  .cat-tabs a{
+    border:1.5px solid var(--terracota-deep); color:var(--terracota-deep);
+    padding:9px 18px; border-radius:999px; text-decoration:none; font-size:0.9rem; font-weight:600;
+  }
+  .cat-tabs a:hover{background:var(--terracota-deep); color:#fff;}
+
+  /* ---------- Product grid ---------- */
+  .badge-row{display:flex; gap:8px; margin-bottom:18px; flex-wrap:wrap;}
+  .badge{
+    font-size:0.78rem; font-weight:600; color:var(--terracota-deep);
+    background:rgba(157,83,84,0.12); padding:5px 12px; border-radius:999px;
+  }
+  .product-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(270px,1fr)); gap:26px;}
+  .card{
+    background:var(--cream-light); border:1px solid var(--line);
+    border-radius:var(--radius-organic); overflow:hidden; display:flex; flex-direction:column;
+    box-shadow:var(--shadow);
+  }
+  .card .thumb{aspect-ratio:4/3; overflow:hidden; background:#ded9c8;}
+  .card .thumb img{width:100%; height:100%; object-fit:cover;}
+  .thumb.placeholder{display:flex; align-items:center; justify-content:center; color:var(--terracota-deep); font-size:0.85rem; text-align:center; padding:16px; font-style:italic; background:repeating-linear-gradient(135deg, #ded9c8, #ded9c8 12px, #e6e2d2 12px, #e6e2d2 24px);}
+  .card-body{padding:20px 20px 22px; display:flex; flex-direction:column; gap:10px; flex:1;}
+  .card-body h3{font-size:1.12rem; font-weight:500;}
+  .card-meta{display:flex; justify-content:space-between; align-items:baseline; gap:10px;}
+  .price{font-family:'Fraunces', serif; font-weight:600; color:var(--terracota); font-size:1.15rem;}
+  .servings{font-size:0.82rem; color:var(--ink-soft);}
+  details.ingredients{margin-top:2px; font-size:0.88rem;}
+  details.ingredients summary{
+    cursor:pointer; font-weight:600; color:var(--terracota-deep); list-style:none;
+    display:flex; align-items:center; gap:6px;
+  }
+  details.ingredients summary::-webkit-details-marker{display:none;}
+  details.ingredients summary::before{content:"+"; font-size:1rem; width:16px;}
+  details.ingredients[open] summary::before{content:"–";}
+  details.ingredients p{margin:8px 0 0; color:var(--ink-soft);}
+  details.ingredients .allergens{margin-top:6px; font-size:0.8rem; color:var(--terracota-deep); font-weight:600;}
+  .card-actions{margin-top:auto; padding-top:6px;}
+  .btn-wa-card{
+    width:100%; background:var(--terracota); color:#fff; border:none;
+    padding:11px 14px; border-radius:14px; font-weight:600; font-size:0.9rem;
+    cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    transition:background 0.2s ease;
+  }
+  .btn-wa-card:hover{background:var(--terracota-deep);}
+  .btn-wa-card svg{width:16px; height:16px; fill:#fff;}
+
+  /* ---------- Business section ---------- */
+  .biz{display:grid; grid-template-columns:1fr 1fr; gap:52px; align-items:center;}
+  .biz img{border-radius:70px 14px 70px 14px; box-shadow:var(--shadow);}
+  .biz-list{list-style:none; margin:22px 0 0; padding:0; display:grid; gap:16px;}
+  .biz-list li{display:flex; gap:14px; align-items:flex-start;}
+  .biz-list .num{
+    font-family:'Fraunces', serif; color:var(--gold); font-weight:600; font-size:1.1rem; min-width:26px;
+  }
+  .biz-list strong{display:block; color:var(--terracota-deep);}
+  .biz-note{
+    margin-top:26px; padding:16px 18px; background:rgba(185,138,74,0.14);
+    border-left:3px solid var(--gold); border-radius:0 12px 12px 0; font-size:0.92rem; color:var(--ink-soft);
+  }
+
+  /* ---------- Policies ---------- */
+  .policy-grid{display:grid; gap:14px;}
+  .policy{
+    background:var(--cream-light); border:1px solid var(--line); border-radius:16px; padding:2px 22px;
+  }
+  .policy summary{
+    cursor:pointer; padding:18px 0; font-weight:600; color:var(--terracota-deep);
+    display:flex; justify-content:space-between; align-items:center; list-style:none;
+  }
+  .policy summary::-webkit-details-marker{display:none;}
+  .policy summary::after{content:"↓"; color:var(--terracota); transition:transform 0.2s ease;}
+  .policy[open] summary::after{transform:rotate(180deg);}
+  .policy p, .policy ul{color:var(--ink-soft); font-size:0.95rem; margin:0 0 18px; padding-left:0;}
+  .policy ul{padding-left:18px;}
+
+  /* ---------- Footer ---------- */
+  footer{background:var(--terracota-deep); color:var(--cream-light); padding:52px 0 30px;}
+  .foot-grid{display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:40px;}
+  footer h4{font-family:'Fraunces', serif; font-weight:500; margin-bottom:14px; color:#fff;}
+  footer p, footer a{color:rgba(246,245,239,0.82); font-size:0.92rem; text-decoration:none;}
+  footer .brand-foot{display:flex; align-items:center; gap:10px; margin-bottom:14px;}
+  footer .brand-foot img{height:38px;}
+  footer ul{list-style:none; padding:0; margin:0; display:grid; gap:10px;}
+  .foot-bottom{
+    max-width:var(--maxw); margin:36px auto 0; padding:18px 24px 0; border-top:1px solid rgba(246,245,239,0.18);
+    font-size:0.82rem; color:rgba(246,245,239,0.6); text-align:center;
+  }
+
+  /* ---------- Floating WhatsApp ---------- */
+  .wa-float{
+    position:fixed; bottom:22px; right:22px; z-index:60;
+    background:var(--terracota); color:#fff; width:58px; height:58px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center; border:none; cursor:pointer;
+    box-shadow:0 10px 26px rgba(54,39,39,0.35);
+  }
+  .wa-float svg{width:28px; height:28px; fill:#fff;}
+  .wa-float:hover{background:var(--terracota-deep);}
+
+  @media (max-width:860px){
+    .hero-grid, .story, .biz{grid-template-columns:1fr;}
+    .hero-figure{order:-1; max-width:320px; margin:0 auto;}
+    .foot-grid{grid-template-columns:1fr; gap:28px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="nav-row">
+    <a class="brand" href="#top">
+      <img src="images/icon-terracota.png" alt="MapuTru">
+      <span class="brand-name">MapuTru</span>
+    </a>
+    <nav class="links">
+      <a href="#saludable">Saludable</a>
+      <a href="#tortas">Tortas completas</a>
+      <a href="#individuales">Postres individuales</a>
+      <a href="#salados">Sánduches</a>
+      <a href="#promos">Promociones</a>
+      <a href="#empresas">Empresas</a>
+      <a href="#politicas">Políticas</a>
+    </nav>
+    <a class="btn-wa-pill" id="wa-header" href="#" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.79.47 3.48 1.29 4.94L2 22l5.29-1.38a9.9 9.9 0 0 0 4.75 1.21h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2Zm0 18.05c-1.5 0-2.9-.4-4.12-1.11l-.3-.17-3.14.82.84-3.06-.19-.31a8.06 8.06 0 0 1-1.24-4.31c0-4.47 3.64-8.1 8.15-8.1 4.47 0 8.1 3.63 8.1 8.1 0 4.47-3.63 8.14-8.1 8.14Zm4.46-6.08c-.24-.12-1.43-.7-1.65-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.01-.37-1.92-1.18-.71-.63-1.19-1.41-1.33-1.65-.14-.24-.01-.37.11-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.31-.74-1.8-.19-.46-.39-.4-.54-.4-.14-.01-.3-.01-.46-.01a.9.9 0 0 0-.65.3c-.22.24-.86.84-.86 2.05s.88 2.38 1 2.54c.12.16 1.73 2.64 4.19 3.7.59.25 1.05.4 1.41.52.59.19 1.13.16 1.55.1.47-.07 1.43-.58 1.63-1.15.2-.56.2-1.04.14-1.15-.06-.11-.22-.17-.46-.29Z"/></svg>
+      Pedir por WhatsApp
+    </a>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow-mark">Repostería Sabaneta · Envigado · Itagüí · La Estrella</span>
+        <h1>Postres que le dan una segunda vida a la cosecha</h1>
+        <p class="lede">MapuTru es un modelo de upcycling alimentario: rescatamos frutas, verduras y tubérculos que la agricultura deja de lado, y los convertimos en tortas, tartas y postres artesanales de 8 a 10 porciones.</p>
+        <div class="hero-ctas">
+          <a class="btn-primary" href="#tortas">Ver el catálogo</a>
+          <a class="btn-ghost" href="#empresas">Opción empresarial</a>
+        </div>
+      </div>
+      <div class="hero-figure">
+        <div class="blob"></div>
+        <img src="images/hero-productos.jpg" alt="Selección de postres MapuTru empacados junto a la bolsa de la marca">
+      </div>
+    </div>
+  </section>
+
+  <div class="promo-band" id="promos">
+    <div class="wrap">
+      <div class="promo-track">
+        <span>🍰 3 postres de 120gr por <strong>$25.000</strong></span>
+        <span class="sep">✦</span>
+        <span>🥪 2 sánduches por <strong>$10.500</strong></span>
+        <span class="sep">✦</span>
+        <span>🎂 Tarta vasca + blondies de banano — promo empresarial próximamente</span>
+        <span class="sep">✦</span>
+        <span>📦 Recogida gratis en Sabaneta · domicilio propio</span>
+        <span class="sep">✦</span>
+        <span>🧾 Manejamos factura electrónica</span>
+      </div>
+    </div>
+  </div>
+
+  <section class="alt">
+    <div class="wrap story">
+      <img src="images/mini-bundts-nobg.png" alt="Mini tortas elaboradas a partir de mermas de fruta" style="background:transparent; box-shadow:none; border-radius:0;">
+      <div>
+        <span class="eyebrow-mark">Nuestra filosofía</span>
+        <h2>Menos desperdicio, más sabor</h2>
+        <p>Trabajamos con mermas agrícolas —fruta madura, verdura y tubérculo que no cumple el estándar comercial pero está perfecta para hornear— y las convertimos en recetas balanceadas entre lo delicioso y lo consciente.</p>
+        <ul>
+          <li>Ingredientes de proveedores locales, aprovechados antes de que se pierdan.</li>
+          <li>Líneas clásicas y línea saludable, con menos azúcar refinada y endulzantes como miel de caña.</li>
+          <li>Producción bajo pedido: horneamos lo que realmente se va a comer.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="salados">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="kicker">Categoría</span>
+        <h2>Sánduches</h2>
+        <p>Nuestra opción salada, ideal para media mañana o para acompañar tu pedido de postres.</p>
+      </div>
+      <div class="product-grid" style="margin-top:28px; grid-template-columns:repeat(auto-fill, minmax(300px,1fr));">
+        <article class="card">
+          <div class="thumb"><img src="images/sandwich.jpg" alt="Sánduche de pan de masa madre con jamón de pavo, tomate y lechuga"></div>
+          <div class="card-body">
+            <h3>Sánduche de pavo</h3>
+            <div class="card-meta"><span class="price">$6.500</span><span class="servings">1 unidad · 2 por $10.500</span></div>
+            <details class="ingredients">
+              <summary>Tabla de contenido</summary>
+              <p>Pan de masa madre, jamón de pavo, tomate, lechuga, queso doble crema, salsa de ajo.</p>
+              <div class="allergens">Contiene: gluten, lácteos. Confírmanos si tienes alguna alergia al pedir.</div>
+            </details>
+            <div class="card-actions">
+              <button class="btn-wa-card" data-product="Sánduche de pavo (dime si quieres 1 a $6.500 o 2 por $10.500)" data-price="desde $6.500">
+                <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.79.47 3.48 1.29 4.94L2 22l5.29-1.38a9.9 9.9 0 0 0 4.75 1.21h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2Z"/></svg>
+                Pedir
+              </button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt" id="saludable">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="kicker">Categoría</span>
+        <h2>Línea saludable</h2>
+        <p>Versiones con menos azúcar refinada, endulzadas con miel de caña, pensadas para quienes cuidan lo que comen sin sacrificar sabor. Rinden 8–10 porciones.</p>
+      </div>
+      <div class="cat-tabs">
+        <a href="#tortas">Tortas completas →</a>
+        <a href="#individuales">Postres individuales →</a>
+        <a href="#empresas">Opción empresarial →</a>
+      </div>
+      <div class="product-grid" style="margin-top:28px;">
+
+        <article class="card">
+          <div class="thumb"><img src="images/torta-zanahoria.jpg" alt="Torta de zanahoria saludable"></div>
+          <div class="card-body">
+            <h3>Torta de zanahoria saludable</h3>
+            <div class="card-meta"><span class="price">$87.500</span><span class="servings">8–10 porciones</span></div>
+            <details class="ingredients">
+              <summary>Tabla de contenido</summary>
+              <p>Harina de avena, aceite de girasol, miel de caña, huevos, nuez del Brasil, queso crema, extracto de vainilla, arándanos secos, zanahoria rallada.</p>
+              <div class="allergens">Contiene: huevo, lácteos, frutos secos, gluten (avena).</div>
+            </details>
+            <div class="card-actions">
+              <button class="btn-wa-card" data-product="Torta de zanahoria saludable" data-price="$87.500">
+                <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.79.47 3.48 1.29 4.94L2 22l5.29-1.38a9.9 9.9 0 0 0 4.75 1.21h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2Z"/></svg>
+                Pedir
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="thumb placeholder">Foto próximamente</div>
+          <div class="card-body">
+            <h3>Pie de limón saludable</h3>
+            <div class="card-meta"><span class="price">$95.000</span><span class="servings">8–10 porciones</span></div>
+            <details class="ingredients">
+              <summary>Tabla de contenido</summary>
+              <p>Galletas integrales, margarina, queso crema, crema de leche, miel de caña, limón tahití, gelatina sin sabor.</p>
+              <div class="allergens">Contiene: lácteos, gluten. Puede contener trazas de gelatina animal.</div>
+            </details>
+            <div class="card-actions">
+              <button class="btn-wa-card" data-product="Pie de limón saludable" data-price="$95.000">
+                <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.79.47 3.48 1.29 4.94L2 22l5.29-1.38a9.9 9.9 0 0 0 4.75 1.21h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2Z"/></svg>
+                Pedir
+              </button>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="individuales">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="kicker">Categoría</span>
+        <h2>Postres individuales</h2>
+        <p>Formatos pequeños para una sola persona o para armar una mesa de postres variada.</p>
+      </div>
+      <div class="cat-tabs">
+        <a href="#saludable">Línea saludable →</a>
+        <a href="#tortas">Tortas completas →</a>
+      </div>
+      <div class="product-grid" style="margin-top:28px;">
+
+        <article class="card">
+          <div class="thumb"><img src="images/postre-redvelvet.jpg" alt="Postre individual de 120gr sabor red velvet"></div>
+          <div class="card-body">
+            <h3>Postre individual 120gr</h3>
+            <div class="card-meta"><span class="price">$10.000</span><span class="servings">1 porción</span></div>
+            <p style="font-size:0.86rem; color:var(--ink-soft); margin:0;">Sabores: milo, zanahoria, red velvet, banano con agraz, vainilla con arándanos.</p>
+            <details class="ingredients">
+              <summary>Tabla de contenido por sabor</summary>
+              <p><strong>Red velvet:</strong> leche entera, harina de trigo, aceite de girasol, azúcar, huevo, cocoa, queso crema, vainilla, limón tahití. <em>(lácteos, gluten, huevo)</em></p>
+              <p><strong>Zanahoria:</strong> pre mezcla de naranja, harina de trigo, aceite de girasol, azúcares, huevo, zanahoria rallada, arándanos secos, canela, nuez del Brasil, extracto de whisky y vainilla. <em>(gluten, huevo, frutos secos)</em></p>
+              <p><strong>Milo:</strong> leche entera, harina de trigo, aceite de girasol, azúcar, huevo, Milo, queso crema, galleta Milo, vainilla. <em>(lácteos, gluten, huevo)</em></p>
+              <p><strong>Vainilla con arándanos:</strong> harina de avena, margarina, dátiles, arándanos frescos, miel de caña, queso crema, huevo. <em>(lácteos, gluten, huevo)</em></p>
+              <p><strong>Banano con agraz:</strong> receta en desarrollo, ingredientes por confirmar.</p>
+              <div class="allergens">Confírmanos tu sabor y cualquier alergia al momento de pedir.</div>
+            </details>
+            <div class="card-actions">
+              <button class="btn-wa-card" data-product="Postre individual 120gr" data-price="$10.000">
+                <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.79.47 3.48 1.29 4.94L2 22l5.29-1.38a9.9 9.9 0 0 0 4.75 1.21h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2Z"/></svg>
+                Pedir
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="thumb"><img src="images/postre-milo.jpg" alt="Postre individual de 80gr sabor milo"></div>
+          <div class="card-body">
+            <h3>Postre individual 80gr</h3>
+            <div class="card-meta"><span class="price">$6.500</span><span class="servings">1 porción</span></div>
+            <p style="font-size:0.86rem; color:var(--ink-soft); margin:0;">Sabores: milo, zanahoria, red velvet, banano con agraz, vainilla con arándanos.</p>
+            <details class="ingredients">
+              <summary>Tabla de contenido por sabor</summary>
+              <p><strong>Red velvet:</strong> leche entera, harina de trigo, aceite de girasol, azúcar, huevo, cocoa, queso crema, vainilla, limón tahití. <em>(lácteos, gluten, huevo)</em></p>
+              <p><strong>Zanahoria:</strong> pre mezcla de naranja, harina de trigo, aceite de girasol, azúcares, huevo, zanahoria rallada, arándanos secos, canela, nuez del Brasil, extracto de whisky y vainilla. <em>(gluten, huevo, frutos secos)</em></p>
+              <p><strong>Milo:</strong> leche entera, harina de trigo, aceite de girasol, azúcar, huevo, Milo, queso crema, galleta Milo, vainilla. <em>(lácteos, gluten, huevo)</em></p>
+              <p><strong>Vainilla con arándanos:</strong> harina de avena, margarina, dátiles, arándanos frescos, miel de caña, queso crema, huevo. <em>(lácteos, gluten, huevo)</em></p>
+              <p><strong>Banano con agraz:</strong> receta en desarrollo, ingredientes por confirmar.</p>
+              <div class="allergens">Confírmanos tu sabor y cualquier alergia al momento de pedir.</div>
+            </details>
+            <div class="card-actions">
+              <button class="btn-wa-card" data-product="Postre individual 80gr" data-price="$6.500">
+                <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.79.47 3.48 1.29 4.94L2 22l5.29-1.38a9.9 9.9 0 0 0 4.75 1.21h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2Z"/></svg>
+                Pedir
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="thumb placeholder">Foto próximamente</div>
+          <div class="card-body">
+            <h3>5 Pavlovas</h3>
+            <div class="card-meta"><span class="price">$15.500</span><span class="servings">5 unidades</span></div>
+            <details class="ingredients">
+              <summary>Tabla de contenido</summary>
+              <p>Base de merengue con margarina, huevo, queso crema, y topping de fresas y arándanos frescos.</p>
+              <div class="allergens">Contiene: huevo, lácteos.</div>
+            </details>
+            <div class="card-actions">
+              <button class="btn-wa-card" data-product="5 Pavlovas" data-price="$15.500">
+                <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.79.47 3.48 1.29 4.94L2 22l5.29-1.38a9.9 9.9 0 0 0 4.75 1.21h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2Z"/></svg>
+                Pedir
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="thumb"><img src="images/mini-bundts-nobg.png" alt="6 blondies de banano MapuTru"></div>
+          <div class="card-body">
+            <h3>6 Blondies de banano</h3>
+            <div class="card-meta"><span class="price">$34.500</span><span class="servings">6 unidades</span></div>
+            <details class="ingredients">
+              <summary>Tabla de contenido</summary>
+              <p>Banano, harina de avena, chips de chocolate, dátiles, leche entera, aceite de oliva, extracto de vainilla.</p>
+              <div class="allergens">Contiene: gluten, lácteos. Puede contener trazas de frutos secos.</div>
+            </details>
+            <div class="card-actions">
+              <button class="btn-wa-card" data-product="6 Blondies de banano" data-price="$34.500">
+                <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.79.47 3.48 1.29 4.94L2 22l5.29-1.38a9.9 9.9 0 0 0 4.75 1.21h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2Z"/></svg>
+                Pedir
+              </button>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="alt" id="tortas">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="kicker">Categoría</span>
+        <h2>Tortas completas</h2>
+        <p>Nuestras recetas clásicas, horneadas para compartir. Todas de 8–10 porciones.</p>
+      </div>
+      <div class="cat-tabs">
+        <a href="#saludable">Línea saludable →</a>
+        <a href="#empresas">Opción empresarial →</a>
+      </div>
+      <div class="product-grid" style="margin-top:28px;">
+
+        <article class="card">
+          <div class="thumb"><img src="images/torta-zanahoria.jpg" alt="Torta de zanahoria"></div>
+          <div class="card-body">
+            <h3>Torta de zanahoria</h3>
+            <div class="card-meta"><span class="price">$55.000</span><span class="servings">8–10 porciones</span></div>
+            <details class="ingredients">
+              <summary>Tabla de contenido</summary>
+              <p>Harina de trigo, aceite de girasol, azúcares, huevos, zanahoria rallada, arándanos secos, canela, nuez del Brasil, extracto de vainilla.</p>
+              <div class="allergens">Contiene: gluten, huevo, frutos secos.</div>
+            </details>
+            <div class="card-actions">
+              <button class="btn-wa-card" data-product="Torta de zanahoria" data-price="$55.000">
+                <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.79.47 3.48 1.29 4.94L2 22l5.29-1.38a9.9 9.9 0 0 0 4.75 1.21h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2Z"/></svg>
+                Pedir
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="thumb"><img src="images/torta-redvelvet.jpg" alt="Torta red velvet"></div>
+          <div class="card-body">
+            <h3>Torta Red Velvet</h3>
+            <div class="card-meta"><span class="price">$65.000</span><span class="servings">8–10 porciones</span></div>
+            <details class="ingredients">
+              <summary>Tabla de contenido</summary>
+              <p>Leche entera, harina de avena, aceite de oliva, azúcar, huevos, cocoa, queso crema, extracto de vainilla, limón tahití.</p>
+              <div class="allergens">Contiene: lácteos, gluten, huevo.</div>
+            </details>
+            <div class="card-actions">
+              <button class="btn-wa-card" data-product="Torta Red Velvet" data-price="$65.000">
+                <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.79.47 3.48 1.29 4.94L2 22l5.29-1.38a9.9 9.9 0 0 0 4.75 1.21h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2Z"/></svg>
+                Pedir
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="thumb"><img src="images/tarta-vasca.jpg" alt="Tarta vasca"></div>
+          <div class="card-body">
+            <h3>Tarta vasca</h3>
+            <div class="card-meta"><span class="price">$75.000</span><span class="servings">8–10 porciones</span></div>
+            <details class="ingredients">
+              <summary>Tabla de contenido</summary>
+              <p>Queso crema, crema de leche, azúcar, huevos, harina de trigo.</p>
+              <div class="allergens">Contiene: lácteos, huevo, gluten.</div>
+            </details>
+            <div class="card-actions">
+              <button class="btn-wa-card" data-product="Tarta vasca" data-price="$75.000">
+                <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.79.47 3.48 1.29 4.94L2 22l5.29-1.38a9.9 9.9 0 0 0 4.75 1.21h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2Z"/></svg>
+                Pedir
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="thumb"><img src="images/torta-milo.jpg" alt="Torta de milo"></div>
+          <div class="card-body">
+            <h3>Torta de milo</h3>
+            <div class="card-meta"><span class="price">$75.000</span><span class="servings">8–10 porciones</span></div>
+            <details class="ingredients">
+              <summary>Tabla de contenido</summary>
+              <p>Leche entera, harina de trigo, margarina, azúcar, huevos, milo, queso crema, galleta milo, extracto de vainilla.</p>
+              <div class="allergens">Contiene: lácteos, gluten, huevo.</div>
+            </details>
+            <div class="card-actions">
+              <button class="btn-wa-card" data-product="Torta de milo" data-price="$75.000">
+                <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.79.47 3.48 1.29 4.94L2 22l5.29-1.38a9.9 9.9 0 0 0 4.75 1.21h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2Z"/></svg>
+                Pedir
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="thumb placeholder">Foto próximamente</div>
+          <div class="card-body">
+            <h3>Pie de limón</h3>
+            <div class="card-meta"><span class="price">$78.500</span><span class="servings">8–10 porciones</span></div>
+            <details class="ingredients">
+              <summary>Tabla de contenido</summary>
+              <p>Galleta sultana, crema de leche, queso crema, margarina, azúcar, limón tahití, gelatina sin sabor.</p>
+              <div class="allergens">Contiene: lácteos, gluten. Puede contener trazas de gelatina animal.</div>
+            </details>
+            <div class="card-actions">
+              <button class="btn-wa-card" data-product="Pie de limón" data-price="$78.500">
+                <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.79.47 3.48 1.29 4.94L2 22l5.29-1.38a9.9 9.9 0 0 0 4.75 1.21h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2Z"/></svg>
+                Pedir
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="thumb placeholder">Foto próximamente</div>
+          <div class="card-body">
+            <h3>Cheesecake de arándanos</h3>
+            <div class="card-meta"><span class="price">$75.000</span><span class="servings">8–10 porciones</span></div>
+            <details class="ingredients">
+              <summary>Tabla de contenido</summary>
+              <p>Queso crema, margarina, azúcar, crema de leche, arándanos/uva isabella, galleta sultana, gelatina sin sabor.</p>
+              <div class="allergens">Contiene: lácteos, gluten. Puede contener trazas de gelatina animal.</div>
+            </details>
+            <div class="card-actions">
+              <button class="btn-wa-card" data-product="Cheesecake de arándanos" data-price="$75.000">
+                <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.79.47 3.48 1.29 4.94L2 22l5.29-1.38a9.9 9.9 0 0 0 4.75 1.21h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2Z"/></svg>
+                Pedir
+              </button>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="empresas">
+    <div class="wrap biz">
+      <div>
+        <span class="eyebrow-mark">Opción empresarial</span>
+        <h2>Postres para empresas y eventos grandes</h2>
+        <p style="color:var(--ink-soft); margin-top:14px;">Si organizas un evento corporativo, una fiesta grande o necesitas postres de forma recurrente para tu empresa, armamos una propuesta a la medida.</p>
+        <ul class="biz-list">
+          <li><span class="num">1</span><div><strong>Cotización personalizada</strong>Cantidad, sabores y presupuesto según tu evento.</div></li>
+          <li><span class="num">2</span><div><strong>Factura electrónica</strong>Disponible para todo pedido empresarial.</div></li>
+          <li><span class="num">3</span><div><strong>Presentación para mesas de postres</strong>Formatos individuales o tortas completas, según el aforo.</div></li>
+        </ul>
+        <div class="biz-note">Estamos terminando de diseñar nuestra promoción empresarial (tarta vasca + blondies de banano). Escríbenos y te avisamos apenas esté lista, o cotizamos tu evento desde ya.</div>
+        <div class="hero-ctas">
+          <button class="btn-primary" id="wa-empresas">Cotizar evento empresarial</button>
+        </div>
+      </div>
+      <img src="images/plato-eventos.jpg" alt="Postre de presentación elaborada para eventos">
+    </div>
+  </section>
+
+  <section class="alt" id="politicas">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="kicker">Información</span>
+        <h2>Políticas de MapuTru</h2>
+        <p>Todo lo que necesitas saber antes de hacer tu pedido.</p>
+      </div>
+      <div class="policy-grid">
+        <details class="policy" open>
+          <summary>Pedidos</summary>
+          <ul>
+            <li>Los pedidos se realizan con mínimo 48 horas de anticipación.</li>
+            <li>Se confirma con un abono del 30% del valor total.</li>
+            <li>El pedido queda confirmado solo al recibir el comprobante de pago.</li>
+          </ul>
+        </details>
+        <details class="policy">
+          <summary>Entregas</summary>
+          <ul>
+            <li>Recogida gratuita en el Colegio El Carmelo, Sabaneta.</li>
+            <li>Domicilio gratis en Sabaneta.</li>
+            <li>Domicilio $8.000 para Envigado, La Estrella, Itagüí y zonas del sur.</li>
+            <li>Domicilio $15.000 para el resto de zonas.</li>
+            <li>Domicilio $30.000 para el norte.</li>
+            <li>Por ahora no realizamos envíos a otras ciudades.</li>
+          </ul>
+        </details>
+        <details class="policy">
+          <summary>Alergias e ingredientes</summary>
+          <p>Cada producto incluye su tabla de contenido con los ingredientes principales. Al confirmar tu pedido por WhatsApp te preguntaremos si tienes alguna alergia o restricción alimentaria. MapuTru no se hace responsable por reacciones alérgicas no informadas previamente.</p>
+        </details>
+        <details class="policy">
+          <summary>Devoluciones</summary>
+          <p>Al ser productos perecederos, no se aceptan devoluciones una vez entregado el producto, salvo defectos evidentes verificables en el momento de la entrega.</p>
+        </details>
+        <details class="policy">
+          <summary>Facturación</summary>
+          <p>Ofrecemos factura electrónica para pedidos empresariales y para cualquier cliente que lo solicite.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot-grid">
+    <div>
+      <div class="brand-foot">
+        <img src="images/icon-cream.png" alt="MapuTru">
+        <span style="font-family:'Fraunces', serif; font-weight:500; color:#fff; font-size:1.1rem;">MapuTru Repostera</span>
+      </div>
+      <p>Modelo de upcycling alimentario: postres artesanales hechos con mermas de frutas, verduras y tubérculos rescatados.</p>
+    </div>
+    <div>
+      <h4>Navegación</h4>
+      <ul>
+        <li><a href="#saludable">Línea saludable</a></li>
+        <li><a href="#tortas">Tortas completas</a></li>
+        <li><a href="#empresas">Empresarial</a></li>
+        <li><a href="#politicas">Políticas</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Contacto</h4>
+      <ul>
+        <li>WhatsApp: 300 499 2561</li>
+        <li>Recogida: Colegio El Carmelo, Sabaneta</li>
+        <li>Domicilios: Sabaneta y zonas cercanas</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">© <span id="year"></span> MapuTru Repostera. Postres bajo pedido, hechos a mano.</div>
+</footer>
+
+<button class="wa-float" id="wa-float" aria-label="Pedir por WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.79.47 3.48 1.29 4.94L2 22l5.29-1.38a9.9 9.9 0 0 0 4.75 1.21h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2Zm0 18.05c-1.5 0-2.9-.4-4.12-1.11l-.3-.17-3.14.82.84-3.06-.19-.31a8.06 8.06 0 0 1-1.24-4.31c0-4.47 3.64-8.1 8.15-8.1 4.47 0 8.1 3.63 8.1 8.1 0 4.47-3.63 8.14-8.1 8.14Zm4.46-6.08c-.24-.12-1.43-.7-1.65-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.01-.37-1.92-1.18-.71-.63-1.19-1.41-1.33-1.65-.14-.24-.01-.37.11-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.31-.74-1.8-.19-.46-.39-.4-.54-.4-.14-.01-.3-.01-.46-.01a.9.9 0 0 0-.65.3c-.22.24-.86.84-.86 2.05s.88 2.38 1 2.54c.12.16 1.73 2.64 4.19 3.7.59.25 1.05.4 1.41.52.59.19 1.13.16 1.55.1.47-.07 1.43-.58 1.63-1.15.2-.56.2-1.04.14-1.15-.06-.11-.22-.17-.46-.29Z"/></svg>
+</button>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  const WA_NUMBER = "573004992561";
+
+  function openWhatsApp(message){
+    window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(message)}`, '_blank', 'noopener');
+  }
+
+  document.querySelectorAll('.btn-wa-card').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const name = btn.dataset.product;
+      const price = btn.dataset.price;
+      const msg = `Hola MapuTru! Quiero pedir: ${name} (${price}).\n\n¿Tienes alguna alergia o restricción alimentaria? \nFecha deseada de entrega/recogida: \n¿Recoges en el Colegio El Carmelo o necesitas domicilio?`;
+      openWhatsApp(msg);
+    });
+  });
+
+  const genericMsg = "Hola MapuTru! Quiero hacer un pedido, ¿me ayudas?";
+  document.getElementById('wa-header').addEventListener('click', (e)=>{
+    e.preventDefault();
+    openWhatsApp(genericMsg);
+  });
+  document.getElementById('wa-float').addEventListener('click', ()=> openWhatsApp(genericMsg));
+  document.getElementById('wa-empresas').addEventListener('click', ()=>{
+    openWhatsApp("Hola MapuTru! Quiero cotizar postres para un evento empresarial. Fecha del evento: \nNúmero aproximado de personas: \nPresupuesto o preferencia de sabores: ");
+  });
+</script>
+
+</body>
+</html>
